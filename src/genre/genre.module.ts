@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import GenreServices from './genre.service';
+import GenreService from './genre.service';
 import GenreController from './genre.controller';
 
 @Module({
   imports: [],
   controllers: [GenreController],
-  providers: [GenreServices],
+  providers: [GenreService],
 })
 export default class GenreModule {}

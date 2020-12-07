@@ -1,10 +1,10 @@
 import { Body, Controller, Get, ParseIntPipe, Post, Put } from '@nestjs/common';
-import { UserServices } from './user.service';
+import UserService from './user.service';
 import CreateUserDto from './dto/create-user.dto';
 
 @Controller('users')
-export class UserController {
-    constructor(private readonly usersServices: UserServices) {}
+export default class UserController {
+    constructor(private readonly usersServices: UserService) {}
 
     //'postUser()' will handle the creating of new User
     @Post('post')

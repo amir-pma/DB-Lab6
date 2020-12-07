@@ -5,7 +5,7 @@ import BookEntity from '../db/entity/book.entity';
 import {getConnection} from "typeorm";
 
 @Injectable()
-export class UserServices {
+export default class UserService {
 
 	async insert(userDetails: CreateUserDto): Promise<UserEntity> {
 		const userEntity: UserEntity = UserEntity.create();
