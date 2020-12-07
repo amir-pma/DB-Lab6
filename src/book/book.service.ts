@@ -4,7 +4,7 @@ import UserEntity from '../db/entity/user.entity';
 import { createQueryBuilder, getConnection } from 'typeorm';
 import GenreEntity from '../db/entity/genre.entity';
 
-export class BooksService {
+export class BooksServices {
 
     async insert(bookDetails: CreateBookDto): Promise<BookEntity> {
         const { name , userID , genreIDs } = bookDetails;
