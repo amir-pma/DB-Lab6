@@ -4,14 +4,17 @@ import CreateUserDto from './dto/create-user.dto';
 import BookEntity from '../db/entity/book.entity';
 import {getConnection} from "typeorm";
 import UpdateUserDto from './dto/update-user.dto';
+import { hashSync } from 'bcrypt'
 
 @Injectable()
 export default class UserService {
 
 	async insert(userDetails: CreateUserDto): Promise<UserEntity> {
 		const userEntity: UserEntity = UserEntity.create();
-		const { name } = userDetails;
+		const { name, username, password } = userDetails;
 		userEntity.name = name;
+		userEntity.username = username;
+		userEntity.password = hashSync(password, 10);
 		await UserEntity.save(userEntity);
 		return userEntity;
 	}
@@ -33,12 +36,18 @@ export default class UserService {
     }
 
     async update(userDetails: UpdateUserDto): Promise<UserEntity> {
-		const { id, name } = userDetails;
+		const { id, name, username, password } = userDetails;
         const user = await UserEntity.findOne(id);
         if(user != undefined) {
 			user.name = name;
+			user.username = username;
+			user.password = hashSync(password, 10);
 			await UserEntity.save(user);
         }
         return user;
+	}
+	
+	async findOne(userID: number): Promise<UserEntity | undefined> {
+        return await UserEntity.findOne(userID);
     }
 }

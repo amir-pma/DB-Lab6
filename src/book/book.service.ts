@@ -4,7 +4,9 @@ import UserEntity from '../db/entity/user.entity';
 import { createQueryBuilder, getConnection } from 'typeorm';
 import GenreEntity from '../db/entity/genre.entity';
 import UpdateBookDto from './dto/update-book.dto';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export default class BooksService {
 
     async insert(bookDetails: CreateBookDto): Promise<BookEntity> {
