@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import CreateGenreDto from './dto/create-genre.dto';
 import GenreEntity from '../db/entity/genre.entity';
+import { getRepository } from 'typeorm';
 
 @Injectable()
 export default class GenreService {
     async insert(genreDetails: CreateGenreDto): Promise<GenreEntity> {
-        const genreEntity: GenreEntity = GenreEntity.create();
+        const repository = getRepository(GenreEntity);
+        const genreEntity: GenreEntity = repository.create();
         const {type} = genreDetails;
         genreEntity.type = type;
-        await GenreEntity.save(genreEntity);
+        await repository.save(genreEntity);
         return genreEntity;
     }
 
