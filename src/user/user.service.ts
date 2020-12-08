@@ -3,6 +3,7 @@ import UserEntity from '../db/entity/user.entity';
 import CreateUserDto from './dto/create-user.dto';
 import BookEntity from '../db/entity/book.entity';
 import {getConnection} from "typeorm";
+import UpdateUserDto from './dto/update-user.dto';
 
 @Injectable()
 export default class UserService {
@@ -24,4 +25,20 @@ export default class UserService {
 		const user: UserEntity = await UserEntity.findOne({where: {id: userID}, relations: ['books']});
 		return user.books;
 	}
+
+	async delete(userID: number): Promise<UserEntity> {
+        const user = await UserEntity.findOne(userID);
+        await user.remove();
+		return user;
+    }
+
+    async update(userDetails: UpdateUserDto): Promise<UserEntity> {
+		const { id, name } = userDetails;
+        const user = await UserEntity.findOne(id);
+        if(user != undefined) {
+			user.name = name;
+			await UserEntity.save(user);
+        }
+        return user;
+    }
 }

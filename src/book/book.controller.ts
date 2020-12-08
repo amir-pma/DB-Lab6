@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Delete, Put, ParseIntPipe, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Put, Query } from '@nestjs/common';
 import BooksService from './book.service';
 import CreateBookDto from './dto/create-book.dto';
 import { ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';

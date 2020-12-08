@@ -1,7 +1,8 @@
-import { Body, Controller, Get, ParseIntPipe, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Put, Query, ParseIntPipe } from '@nestjs/common';
 import UserService from './user.service';
 import CreateUserDto from './dto/create-user.dto';
 import {ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import UpdateUserDto from './dto/update-user.dto';
 
 
 @Controller('users')
@@ -28,5 +29,23 @@ export default class UserController {
     @Get('books')
     getBooks( @Body('userID', ParseIntPipe) userID: number ) {
         return this.usersServices.getBooksOfUser(userID);
+    }
+
+    @ApiResponse({ status: 200, description: "Deletes a user from database" })
+    @ApiQuery({
+        name: 'userID',
+        required: true,
+        type: Number,
+        description :`id of user being deleted`
+    })
+    @Delete('delete')
+    deleteBook(@Query('userID') userID) {
+        return this.usersServices.delete(userID);
+    }
+
+    @ApiResponse({ status: 200, description: "Updates an existing user in database" })
+    @Put('update')
+    updateBook(@Body() user: UpdateUserDto) {
+        return this.usersServices.update(user);
     }
 }
