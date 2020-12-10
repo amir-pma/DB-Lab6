@@ -13,7 +13,6 @@ export default class UserController {
     //'postUser()' will handle the creating of new User
     @ApiResponse({ status: 200, description: "Adds new user to database" }) 
     @Public()
-    @ApiBearerAuth()
     @Post('post')
     postUser( @Body() user: CreateUserDto) {
         return this.usersServices.insert(user);
