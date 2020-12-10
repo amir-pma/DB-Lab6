@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Delete, Put, Query, ParseIntPipe } from '@nestjs/common';
-import UserService from './user.service';
+import { UserService } from './user.service';
 import CreateUserDto from './dto/create-user.dto';
 import {ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import UpdateUserDto from './dto/update-user.dto';

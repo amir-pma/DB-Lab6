@@ -17,6 +17,7 @@ export class AppController {
 	}
 
 	@ApiResponse({ status: 200, description: "Gets logged in user profile (info)" })
+	@ApiBearerAuth()
 	@UseGuards(JwtAuthGuard)
 	@Get('profile')
 	getProfile(@Request() req) {

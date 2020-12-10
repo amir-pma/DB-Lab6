@@ -7,7 +7,7 @@ import UpdateUserDto from './dto/update-user.dto';
 import { hash, compare } from 'bcrypt';
 
 @Injectable()
-export default class UserService {
+export class UserService {
 
 	async insert(userDetails: CreateUserDto): Promise<UserEntity> {
 		const userEntity: UserEntity = UserEntity.create();
