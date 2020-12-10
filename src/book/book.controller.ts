@@ -10,18 +10,21 @@ export default class BooksController {
     constructor(private readonly booksServices: BooksService) {}
 
     @ApiResponse({ status: 200, description: "Adds new book to database" }) 
+    @ApiBearerAuth()
     @Post('post')
     postBook( @Body() book: CreateBookDto) {
         return this.booksServices.insert(book);
     }
 
     @ApiResponse({ status: 200, description: "Gets all the books in database" }) 
+    @ApiBearerAuth()
     @Get()
     getAll() {
         return this.booksServices.getAllBooks();
     }
 
     @ApiResponse({ status: 200, description: "Deletes a book from database" })
+    @ApiBearerAuth()
     @ApiQuery({
         name: 'bookID',
         required: true,
@@ -34,6 +37,7 @@ export default class BooksController {
     }
 
     @ApiResponse({ status: 200, description: "Updates an existing book in database" })
+    @ApiBearerAuth()
     @Put('update')
     updateBook(@Body() book: UpdateBookDto) {
         return this.booksServices.update(book);

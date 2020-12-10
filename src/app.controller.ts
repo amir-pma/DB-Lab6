@@ -3,6 +3,7 @@ import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import {ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { Public } from './public.decorator';
 
 
 @Controller()
@@ -10,6 +11,7 @@ export class AppController {
 	constructor(private authService: AuthService) {}
 
 	@ApiResponse({ status: 200, description: "Logs the new user in and generates token" })
+	@Public()
 	@UseGuards(LocalAuthGuard)
 	@Post('auth/login')
 	async login(@Request() req) {
