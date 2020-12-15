@@ -24,22 +24,6 @@ export default class CreateTaskDto {
     @IsNumber()
     @ApiProperty({
       type: Number,
-      description: 'User the task belongs to'
-    })
-    readonly userID: number;
-
-    @IsArray()
-    @Optional()
-    @ApiPropertyOptional({
-      type: Array(String),
-      description: 'Array of task items'
-    })
-    readonly items: string[];
-
-
-    @IsNumber()
-    @ApiProperty({
-      type: Number,
       description: 'Category task belongs to'
     })
     readonly category: number;

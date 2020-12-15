@@ -18,24 +18,18 @@ export default class TaskEntity extends BaseEntity
     @Column({ length: 500 })
     description: string;
 
-    @ManyToOne(type => CategoryEntity, category => category.tasks, {
-        eager: true
-    })
+    @ManyToOne(type => CategoryEntity, category => category.tasks, { eager: true })
     category: CategoryEntity;
 
     @Optional()
-    @ManyToMany(type => TagEntity, {
-        eager: true
-    })
+    @ManyToMany(type => TagEntity, { eager: true })
     @JoinTable()
     tags: TagEntity[];
 
-    @ManyToOne(type => UserEntity, user => user.tasks)
+    @ManyToOne(type => UserEntity, user => user.tasks, { eager: true })
     user: UserEntity;
 
-    @OneToMany(type => ItemEntity, item => item.task, {
-        eager: true
-    })
+    @OneToMany(type => ItemEntity, item => item.task, { eager: true })
     items: ItemEntity[];
 
 }

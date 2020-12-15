@@ -10,6 +10,7 @@ import TagEntity from 'src/db/entity/tag.entity';
 import ItemEntity from 'src/db/entity/item.entity';
 import CreateItemDto from './dto/create-item.dto';
 import TaskEntity from 'src/db/entity/task.entity';
+import CreateTaskDto from './dto/create-task.dto';
 
 @Injectable()
 export class TodoService {
@@ -79,31 +80,59 @@ export class TodoService {
 		return item;
     }
 
-
-
-
-
-
-    async delete(bookID: number): Promise<BookEntity> {
-        const book = await BookEntity.findOne(bookID);
-        await book.remove();
-		return book;
-    }
-
-    async update(bookDetails: UpdateBookDto): Promise<BookEntity> {
-        const { id, name , userID , genreIDs } = bookDetails;
-        const book = await BookEntity.findOne(id);
-        if(book != undefined) {
-            book.name = name;
-            book.user = await UserEntity.findOne(userID) ;
-            book.genres=[];
-            for ( let i = 0; i < genreIDs.length ; i++)
-            {
-                const genre = await GenreEntity.findOne(genreIDs[i]);
-                book.genres.push(genre);
-            }
-            await book.save();
+    async insertTask(loggedInUserId: number, newTask: CreateTaskDto): Promise<TaskEntity> {
+        const {name, description, category, tags} = newTask;
+        const task = TaskEntity.create();
+        task.name = name;
+        task.description = description || '';
+        task.user = await UserEntity.findOne(loggedInUserId);
+        task.category = await CategoryEntity.findOne(category);
+        task.tags = [];
+        for ( let i = 0; i < tags.length ; i++)
+        {
+            const tag = await TagEntity.findOne(tags[i]);
+            task.tags.push(tag);
         }
-        return book;
+        await task.save();
+        return task;
+
     }
+
+    async getAllTasks(loggedInUserId: number): Promise<TaskEntity[]> {
+        const allTasks = await TaskEntity.find();
+        var userTasks = [];
+        for ( let i = 0; i < allTasks.length ; i++)
+        {
+            if(allTasks[i].user.id === loggedInUserId) {
+                userTasks.push(allTasks[i]);
+            }
+        }
+        return userTasks;
+    }
+
+    async updateTask(loggedInUserId: number, taskId:number, newTask: CreateTaskDto): Promise<TaskEntity> {
+        const {name, description, category, tags} = newTask;
+        const task = await TaskEntity.findOne(taskId);
+        task.name = name;
+        task.description = description || '';
+        task.user = await UserEntity.findOne(loggedInUserId);
+        task.category = await CategoryEntity.findOne(category);
+        task.tags = [];
+        for ( let i = 0; i < tags.length ; i++)
+        {
+            const tag = await TagEntity.findOne(tags[i]);
+            task.tags.push(tag);
+        }
+        await task.save();
+        return task;
+    }
+
+    async deleteTask(loggedInUserId: number, taskId:number): Promise<TaskEntity> {
+        const task = await TaskEntity.findOne(taskId);
+        if(task.user.id === loggedInUserId) {
+            await task.remove();
+        }
+		return task;
+    }
+
 }
