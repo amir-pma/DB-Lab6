@@ -9,6 +9,6 @@ export default class CreateTagDto {
       description: 'Name of the tag',
       maxLength: 500
     })
-    readonly type: string;
+    readonly name: string;
   }
   
