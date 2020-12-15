@@ -7,6 +7,9 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import CategoryEntity from 'src/db/entity/category.entity';
 import CreateTagDto from './dto/create-tag.dto';
 import TagEntity from 'src/db/entity/tag.entity';
+import ItemEntity from 'src/db/entity/item.entity';
+import CreateItemDto from './dto/create-item.dto';
+import TaskEntity from 'src/db/entity/task.entity';
 
 @Injectable()
 export class TodoService {
@@ -36,7 +39,45 @@ export class TodoService {
         return TagEntity.find();
     }
 
+    async insertItem(loggedInUserId: number, newItem: CreateItemDto): Promise<ItemEntity> {
+        const {description, task} = newItem;
+        const itemEntity: ItemEntity = ItemEntity.create();
+        itemEntity.description = description;
+        itemEntity.task = await TaskEntity.findOne(task);
+        itemEntity.user = await UserEntity.findOne(loggedInUserId);
+        await ItemEntity.save(itemEntity);
+        return itemEntity;
+    }
 
+    async getAllItems(loggedInUserId: number): Promise<ItemEntity[]> {
+        const allItems = await ItemEntity.find();
+        var userItems = [];
+        for ( let i = 0; i < allItems.length ; i++)
+        {
+            if(allItems[i].user.id === loggedInUserId) {
+                userItems.push(allItems[i]);
+            }
+        }
+        return userItems;
+    }
+
+    async updateItem(loggedInUserId: number, itemId:number, newItem: CreateItemDto): Promise<ItemEntity> {
+        const {description, task} = newItem;
+        const itemEntity: ItemEntity = await ItemEntity.findOne(itemId);
+        itemEntity.description = description;
+        itemEntity.task = await TaskEntity.findOne(task);
+        itemEntity.user = await UserEntity.findOne(loggedInUserId);
+        await ItemEntity.save(itemEntity);
+        return itemEntity;
+    }
+
+    async deleteItem(loggedInUserId: number, itemId:number): Promise<ItemEntity> {
+        const item = await ItemEntity.findOne(itemId);
+        if(item.user.id === loggedInUserId) {
+            await item.remove();
+        }
+		return item;
+    }
 
 
 
