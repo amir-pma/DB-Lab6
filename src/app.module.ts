@@ -11,6 +11,7 @@ import BookEntity from './db/entity/book.entity';
 import GenreEntity from './db/entity/genre.entity';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [UserModule ,
@@ -21,6 +22,7 @@ import { APP_GUARD } from '@nestjs/core';
     ),
     TypeOrmModule.forRoot(),
     AuthModule,
+    TodoModule,
   ],
   controllers: [AppController],
   providers: [AppService, {
